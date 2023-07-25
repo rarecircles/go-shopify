@@ -417,6 +417,7 @@ func (c *Client) logResponse(res *http.Response) {
 	if res == nil {
 		return
 	}
+
 	c.log.Debugf("RECV %d: %s", res.StatusCode, res.Status)
 	c.logBody(&res.Body, "RESP: %s")
 }

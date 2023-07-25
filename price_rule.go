@@ -36,7 +36,7 @@ type PriceRule struct {
 	TargetSelection                        string                                  `json:"target_selection,omitempty"`
 	AllocationMethod                       string                                  `json:"allocation_method,omitempty"`
 	AllocationLimit                        int64                                   `json:"allocation_limit,omitempty"`
-	OncePerCustomer                        bool                                    `json:"once_per_customer,omitempty"`
+	OncePerCustomer                        bool                                    `json:"once_per_customer"`
 	UsageLimit                             int                                     `json:"usage_limit,omitempty"`
 	StartsAt                               *time.Time                              `json:"starts_at,omitempty"`
 	EndsAt                                 *time.Time                              `json:"ends_at,omitempty"`
@@ -51,9 +51,9 @@ type PriceRule struct {
 	PrerequisiteCollectionIds              []int64                                 `json:"prerequisite_collection_ids,omitempty"`
 	PrerequisiteSavedSearchIds             []int64                                 `json:"prerequisite_saved_search_ids,omitempty"`
 	PrerequisiteCustomerIds                []int64                                 `json:"prerequisite_customer_ids,omitempty"`
-	PrerequisiteSubtotalRange              *prerequisiteSubtotalRange              `json:"prerequisite_subtotal_range,omitempty"`
-	PrerequisiteQuantityRange              *prerequisiteQuantityRange              `json:"prerequisite_quantity_range,omitempty"`
-	PrerequisiteShippingPriceRange         *prerequisiteShippingPriceRange         `json:"prerequisite_shipping_price_range,omitempty"`
+	PrerequisiteSubtotalRange              *prerequisiteSubtotalRange              `json:"prerequisite_subtotal_range"`
+	PrerequisiteQuantityRange              *prerequisiteQuantityRange              `json:"prerequisite_quantity_range"`
+	PrerequisiteShippingPriceRange         *prerequisiteShippingPriceRange         `json:"prerequisite_shipping_price_range"`
 	PrerequisiteToEntitlementQuantityRatio *prerequisiteToEntitlementQuantityRatio `json:"prerequisite_to_entitlement_quantity_ratio,omitempty"`
 }
 
