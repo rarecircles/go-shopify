@@ -50,6 +50,7 @@ type App struct {
 type RateLimitInfo struct {
 	RequestCount      int
 	BucketSize        int
+	GraphQLCost       *GraphQLCost
 	RetryAfterSeconds float64
 }
 
@@ -121,6 +122,10 @@ type Client struct {
 	FulfillmentService         FulfillmentServiceService
 	CarrierService             CarrierServiceService
 	Payouts                    PayoutsService
+	GiftCard                   GiftCardService
+	FulfillmentOrder           FulfillmentOrderService
+	GraphQL                    GraphQLService
+	AssignedFulfillmentOrder   AssignedFulfillmentOrderService
 }
 
 // A general response error that follows a similar layout to Shopify's response
@@ -238,8 +243,8 @@ func (c *Client) NewRequest(method, relPath string, body, options interface{}) (
 // token. The shopName parameter is the shop's myshopify domain,
 // e.g. "theshop.myshopify.com", or simply "theshop"
 // a.NewClient(shopName, token, opts) is equivalent to NewClient(a, shopName, token, opts)
-func (a App) NewClient(shopName, token string, opts ...Option) *Client {
-	return NewClient(a, shopName, token, opts...)
+func (app App) NewClient(shopName, token string, opts ...Option) *Client {
+	return NewClient(app, shopName, token, opts...)
 }
 
 // Returns a new Shopify API client with an already authenticated shopname and
@@ -301,6 +306,10 @@ func NewClient(app App, shopName, token string, opts ...Option) *Client {
 	c.FulfillmentService = &FulfillmentServiceServiceOp{client: c}
 	c.CarrierService = &CarrierServiceOp{client: c}
 	c.Payouts = &PayoutsServiceOp{client: c}
+	c.GiftCard = &GiftCardServiceOp{client: c}
+	c.FulfillmentOrder = &FulfillmentOrderServiceOp{client: c}
+	c.GraphQL = &GraphQLServiceOp{client: c}
+	c.AssignedFulfillmentOrder = &AssignedFulfillmentOrderServiceOp{client: c}
 
 	// apply any options
 	for _, opt := range opts {
@@ -376,7 +385,6 @@ func (c *Client) doGetHeaders(req *http.Request, v interface{}) (http.Header, er
 		return nil, respErr
 	}
 
-	c.logResponse(resp)
 	defer resp.Body.Close()
 
 	if c.apiVersion == defaultApiVersion && resp.Header.Get("X-Shopify-API-Version") != "" {
@@ -418,6 +426,7 @@ func (c *Client) logResponse(res *http.Response) {
 		return
 	}
 
+	c.log.Debugf("Shopify X-Request-Id: %s", res.Header.Get("X-Request-Id"))
 	c.log.Debugf("RECV %d: %s", res.StatusCode, res.Status)
 	c.logBody(&res.Body, "RESP: %s")
 }

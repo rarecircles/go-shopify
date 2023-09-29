@@ -73,7 +73,7 @@ func TestDraftOrderCreate(t *testing.T) {
 
 	draftOrder := DraftOrder{
 		LineItems: []LineItem{
-			LineItem{
+			{
 				VariantID: 1,
 				Quantity:  1,
 			},
@@ -139,7 +139,7 @@ func TestDraftOrderCount(t *testing.T) {
 		t.Errorf("DraftOrder.Count returned %d, expected %d", cnt, expected)
 	}
 
-	status := "open"
+	status := OrderStatusOpen
 	cnt, err = client.DraftOrder.Count(DraftOrderCountOptions{Status: status})
 	if err != nil {
 		t.Errorf("DraftOrder.Count returned an error: %v", err)
@@ -186,7 +186,7 @@ func TestDraftOrderListOptions(t *testing.T) {
 
 	options := DraftOrderListOptions{
 		Limit:  250,
-		Status: "any",
+		Status: OrderStatusAny,
 		Fields: "id,name",
 	}
 
@@ -360,7 +360,6 @@ func TestDraftOrderCreateMetafield(t *testing.T) {
 	metafield := Metafield{
 		Key:       "app_key",
 		Value:     "app_value",
-		ValueType: "string",
 		Namespace: "affiliates",
 	}
 
@@ -383,7 +382,6 @@ func TestDraftOrderUpdateMetafield(t *testing.T) {
 		ID:        2,
 		Key:       "app_key",
 		Value:     "app_value",
-		ValueType: "string",
 		Namespace: "affiliates",
 	}
 

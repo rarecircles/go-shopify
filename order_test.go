@@ -256,7 +256,7 @@ func TestOrderListOptions(t *testing.T) {
 			Fields: "id,name",
 		},
 
-		Status: "any",
+		Status: OrderStatusAny,
 	}
 
 	orders, err := client.Order.List(options)
@@ -370,7 +370,7 @@ func TestOrderCreate(t *testing.T) {
 
 	order := Order{
 		LineItems: []LineItem{
-			LineItem{
+			{
 				VariantID: 1,
 				Quantity:  1,
 			},
@@ -397,8 +397,8 @@ func TestOrderUpdate(t *testing.T) {
 
 	order := Order{
 		ID:                1,
-		FinancialStatus:   "paid",
-		FulfillmentStatus: "fulfilled",
+		FinancialStatus:   OrderFinancialStatusPaid,
+		FulfillmentStatus: OrderFulfillmentStatusFulfilled,
 	}
 
 	o, err := client.Order.Update(order)
@@ -553,8 +553,7 @@ func TestOrderCreateMetafield(t *testing.T) {
 	metafield := Metafield{
 		Key:       "app_key",
 		Value:     "app_value",
-		ValueType: "string",
-		Type:      "single_line_text_field",
+		Type:      MetafieldTypeSingleLineTextField,
 		Namespace: "affiliates",
 	}
 
@@ -577,8 +576,7 @@ func TestOrderUpdateMetafield(t *testing.T) {
 		ID:        2,
 		Key:       "app_key",
 		Value:     "app_value",
-		ValueType: "string",
-		Type:      "single_line_text_field",
+		Type:      MetafieldTypeSingleLineTextField,
 		Namespace: "affiliates",
 	}
 
@@ -1175,7 +1173,7 @@ func propertiesEmptyStructLientItem() LineItem {
 func propertiesStructLientItem() LineItem {
 	return LineItem{
 		Properties: []NoteAttribute{
-			NoteAttribute{
+			{
 				Name:  "property 1",
 				Value: float64(3),
 			},
@@ -1211,11 +1209,11 @@ func validLineItem() LineItem {
 		VariantInventoryManagement: "shopify",
 		PreTaxPrice:                &preTaxPrice,
 		Properties: []NoteAttribute{
-			NoteAttribute{
+			{
 				Name:  "note 1",
 				Value: "one",
 			},
-			NoteAttribute{
+			{
 				Name:  "note 2",
 				Value: float64(2),
 			},
@@ -1223,14 +1221,14 @@ func validLineItem() LineItem {
 		ProductExists:       true,
 		FulfillableQuantity: 1,
 		Grams:               100,
-		FulfillmentStatus:   "partial",
+		FulfillmentStatus:   OrderFulfillmentStatusPartial,
 		TaxLines: []TaxLine{
-			TaxLine{
+			{
 				Title: "State tax",
 				Price: &tl1Price,
 				Rate:  &tl1Rate,
 			},
-			TaxLine{
+			{
 				Title: "Federal tax",
 				Price: &tl2Price,
 				Rate:  &tl2Rate,
